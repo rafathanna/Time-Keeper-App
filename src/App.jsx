@@ -79,7 +79,20 @@ function App() {
 
   // Stable stringify to compare data regardless of key order
   const getStableData = (emps, hist) => {
-    return JSON.stringify({ emps, hist }, Object.keys({ emps, hist }).sort());
+    try {
+      // Sort history keys (dates) and employee lists to ensure stable comparison
+      const sortedHist = {};
+      if (hist) {
+        Object.keys(hist)
+          .sort()
+          .forEach((key) => {
+            sortedHist[key] = hist[key];
+          });
+      }
+      return JSON.stringify({ emps, hist: sortedHist });
+    } catch (e) {
+      return "";
+    }
   };
 
   // Theme State
@@ -165,10 +178,11 @@ function App() {
             cloudData.history,
           );
 
+          // Update local state ONLY if cloud data is genuinely different
           if (stableCloud !== lastCloudData.current) {
             lastCloudData.current = stableCloud;
-            setEmployees(cloudData.employees || []);
-            setHistory(cloudData.history || {});
+            if (cloudData.employees) setEmployees(cloudData.employees);
+            if (cloudData.history) setHistory(cloudData.history);
           }
         }
         setIsCloudLoaded(true);
@@ -182,15 +196,18 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // Sync LOCAL to CLOUD
+  // Sync LOCAL to CLOUD (with debounce and check)
   useEffect(() => {
     if (!isCloudLoaded) return;
 
     const stableLocal = getStableData(employees, history);
+
+    // Only push if the local data has changed compared to what we last saw from cloud
     if (stableLocal !== lastCloudData.current) {
       const timer = setTimeout(async () => {
         try {
           setIsSyncing(true);
+          // Set lastCloudData first to prevent loop if onSnapshot fires before setDoc completes
           lastCloudData.current = stableLocal;
           await setDoc(doc(db, "data", "master"), {
             employees,
@@ -199,10 +216,12 @@ function App() {
           });
         } catch (err) {
           console.error("Firestore Save Error:", err);
+          // Revert lastCloudData on error to allow retry
+          lastCloudData.current = null;
         } finally {
           setIsSyncing(false);
         }
-      }, 1000); // Debounce sync
+      }, 2000); // 2 second debounce for stability
       return () => clearTimeout(timer);
     }
   }, [employees, history, isCloudLoaded]);
@@ -476,12 +495,26 @@ function App() {
 
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
               {/* CLOUD SYNC INDICATOR */}
-              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner">
+              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner">
+                <button
+                  onClick={() => {
+                    // Force a reload by resetting the ref
+                    lastCloudData.current = null;
+                    setIsCloudLoaded(false);
+                    window.location.reload();
+                  }}
+                  title="تحديث إجباري"
+                  className="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all"
+                >
+                  <RefreshCcw
+                    className={`w-3.5 h-3.5 text-slate-400 ${isSyncing ? "animate-spin" : ""}`}
+                  />
+                </button>
                 <div
                   className={`w-2 h-2 rounded-full ${isOnline ? (isSyncing ? "bg-blue-500 animate-pulse" : "bg-green-500") : "bg-rose-500 animate-ping"}`}
                 />
-                <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                  {isSyncing ? "مزامنة..." : isOnline ? "متصل" : "أوفلاين"}
+                <span className="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-tighter ml-1">
+                  {isSyncing ? "مزامنة" : isOnline ? "متصل" : "أوفلاين"}
                 </span>
               </div>
 

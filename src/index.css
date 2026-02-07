@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-[#070b14] dark:text-slate-200 antialiased font-sans transition-all duration-500 overflow-hidden;
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Custom Slim Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors;
+  }
+
+  /* Remove number input arrows */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Hide scrollbar for elements with .no-scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/60 shadow-xl shadow-slate-200/10 dark:shadow-black/20 transition-all duration-300;
+  }
+
+  .premium-card {
+    @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-2xl shadow-slate-200/20 dark:shadow-black/60 transition-all duration-300;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl font-black transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none border-none select-none;
+  }
+
+  .badge {
+    @apply px-2.5 py-1 text-[9px] font-black rounded-lg uppercase tracking-wider;
+  }
+
+  /* Status Colors */
+  .status-dot-working {
+    @apply w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] animate-pulse;
+  }
+  .status-dot-finished {
+    @apply w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)];
+  }
+  .status-dot-waiting {
+    @apply w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700;
+  }
+}
+
+/* Animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

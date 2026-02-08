@@ -28,6 +28,7 @@ import {
   Database,
   Upload,
   Lock,
+  Unlock,
 } from "lucide-react";
 import { format, addDays, parseISO } from "date-fns";
 import { DEFAULT_EMPLOYEES, STORAGE_KEY } from "./constants";
@@ -103,6 +104,14 @@ function App() {
     return "light";
   });
 
+  // Read-only Mode State
+  const [isReadOnly, setIsReadOnly] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("isReadOnly") === "true";
+    }
+    return false;
+  });
+
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -115,6 +124,10 @@ function App() {
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
+
+  useEffect(() => {
+    localStorage.setItem("isReadOnly", isReadOnly.toString());
+  }, [isReadOnly]);
 
   const departments = useMemo(() => {
     const depts = new Set(employees.map((e) => e.department));
@@ -537,14 +550,31 @@ function App() {
                 )}
               </button>
               <button
-                onClick={() => setShowSettings(true)}
-                className={`flex items-center gap-2 p-2.5 sm:px-3.5 sm:py-2.5 rounded-xl transition-all border shadow-sm flex-shrink-0 ${showSettings ? "bg-primary-600 border-primary-600 text-white" : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-primary-500/50 active:scale-90"}`}
+                onClick={() => setIsReadOnly(!isReadOnly)}
+                className={`p-2.5 rounded-xl transition-all active:scale-95 ${
+                  isReadOnly
+                    ? "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+                title={isReadOnly ? "إلغاء وضع القراءة" : "تفعيل وضع القراءة"}
               >
-                <Settings className="w-5 h-5" />
-                <span className="text-xs font-black hidden sm:inline">
-                  إدارة الموظفين
-                </span>
+                {isReadOnly ? (
+                  <Lock className="w-5 h-5" />
+                ) : (
+                  <Unlock className="w-5 h-5" />
+                )}
               </button>
+              {!isReadOnly && (
+                <button
+                  onClick={() => setShowSettings(true)}
+                  className={`flex items-center gap-2 p-2.5 sm:px-3.5 sm:py-2.5 rounded-xl transition-all border shadow-sm flex-shrink-0 ${showSettings ? "bg-primary-600 border-primary-600 text-white" : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-primary-500/50 active:scale-90"}`}
+                >
+                  <Settings className="w-5 h-5" />
+                  <span className="text-xs font-black hidden sm:inline">
+                    إدارة الموظفين
+                  </span>
+                </button>
+              )}
               <button
                 onClick={() => setShowHelp(true)}
                 className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 transition-all active:scale-95 flex-shrink-0"
@@ -923,6 +953,7 @@ function App() {
           <div className="flex gap-3 px-1">
             <button
               onClick={handleResetDay}
+              disabled={isReadOnly}
               className="p-5 bg-white dark:bg-slate-900 text-slate-400 hover:text-rose-500 border-2 border-slate-100 dark:border-slate-800 rounded-[2rem] active:scale-95 transition-all"
               title="إعادة ضبط اليوم"
             >
@@ -931,7 +962,7 @@ function App() {
           </div>
 
           {/* --- BATCH ACTION BAR --- */}
-          {selectedEmployees.length > 0 && (
+          {!isReadOnly && selectedEmployees.length > 0 && (
             <div className="sticky top-20 z-40 bg-primary-600 text-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-xl shadow-primary-500/30 flex flex-col xs:flex-row items-center justify-between gap-3 animate-in slide-in-from-top-4 duration-300">
               <div className="flex items-center gap-2 sm:gap-3">
                 <span className="bg-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-black">
@@ -988,32 +1019,35 @@ function App() {
                 dir="rtl"
               >
                 <div className="flex items-center gap-2 sm:gap-4">
-                  <button
-                    onClick={() => {
-                      if (
+                  {!isReadOnly && (
+                    <button
+                      onClick={() => {
+                        if (
+                          selectedEmployees.length ===
+                            filteredAttendance.length &&
+                          filteredAttendance.length > 0
+                        ) {
+                          setSelectedEmployees([]);
+                        } else {
+                          setSelectedEmployees(
+                            filteredAttendance.map((e) => e.name),
+                          );
+                        }
+                      }}
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border-2 flex items-center justify-center transition-all ${
                         selectedEmployees.length ===
                           filteredAttendance.length &&
                         filteredAttendance.length > 0
-                      ) {
-                        setSelectedEmployees([]);
-                      } else {
-                        setSelectedEmployees(
-                          filteredAttendance.map((e) => e.name),
-                        );
-                      }
-                    }}
-                    className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border-2 flex items-center justify-center transition-all ${
-                      selectedEmployees.length === filteredAttendance.length &&
-                      filteredAttendance.length > 0
-                        ? "bg-primary-600 border-primary-600 text-white"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                    }`}
-                  >
-                    {selectedEmployees.length === filteredAttendance.length &&
-                      filteredAttendance.length > 0 && (
-                        <CheckCircle2 className="w-4 h-4 sm:w-5 h-5" />
-                      )}
-                  </button>
+                          ? "bg-primary-600 border-primary-600 text-white"
+                          : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                      }`}
+                    >
+                      {selectedEmployees.length === filteredAttendance.length &&
+                        filteredAttendance.length > 0 && (
+                          <CheckCircle2 className="w-4 h-4 sm:w-5 h-5" />
+                        )}
+                    </button>
+                  )}
                   <span className="font-black text-slate-900 dark:text-white text-xs sm:text-sm">
                     تحديد الكل ({filteredAttendance.length})
                   </span>
@@ -1033,6 +1067,7 @@ function App() {
                     key={emp.name}
                     dir="rtl"
                     onClick={() => {
+                      if (isReadOnly) return;
                       if (selectedEmployees.includes(emp.name)) {
                         setSelectedEmployees((prev) =>
                           prev.filter((n) => n !== emp.name),
@@ -1041,11 +1076,11 @@ function App() {
                         setSelectedEmployees((prev) => [...prev, emp.name]);
                       }
                     }}
-                    className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl transition-all border-2 active:scale-[0.99] relative overflow-hidden group cursor-pointer ${
+                    className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl transition-all border-2 relative overflow-hidden group ${
                       selectedEmployees.includes(emp.name)
                         ? "bg-primary-50/30 border-primary-500 shadow-sm"
                         : "bg-white border-white shadow-sm hover:border-slate-100"
-                    }`}
+                    } ${isReadOnly ? "cursor-default active:scale-100 opacity-90" : "cursor-pointer active:scale-[0.99]"}`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
                       {/* Status Dot */}
@@ -1085,9 +1120,10 @@ function App() {
                       {/* Times (Compact) */}
                       <div className="flex items-center gap-2 sm:gap-4 px-2 sm:px-4 border-r border-slate-100 dark:border-slate-800">
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors group/time"
+                          className={`text-center cursor-pointer p-0.5 sm:p-1 rounded-lg transition-colors group/time ${!isReadOnly && "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (isReadOnly) return;
                             if (emp.checkIn) {
                               setEditingTime({
                                 name: emp.name,
@@ -1138,9 +1174,10 @@ function App() {
                           )}
                         </div>
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors group/time"
+                          className={`text-center cursor-pointer p-0.5 sm:p-1 rounded-lg transition-colors group/time ${!isReadOnly && "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (isReadOnly) return;
                             if (emp.checkOut) {
                               setEditingTime({
                                 name: emp.name,
@@ -1208,7 +1245,7 @@ function App() {
                         {/* Status/Action Buttons */}
                         <div className="flex items-center gap-2">
                           {/* Custom Status Input */}
-                          {customStatusEmployee === emp.name ? (
+                          {customStatusEmployee === emp.name && !isReadOnly ? (
                             <div
                               className="flex items-center gap-1"
                               onClick={(e) => e.stopPropagation()}
@@ -1311,6 +1348,7 @@ function App() {
                                     }
                                   }}
                                   onClick={(e) => e.stopPropagation()}
+                                  disabled={isReadOnly}
                                   className="px-3 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 outline-none focus:border-amber-500 transition-all"
                                 >
                                   <option value="">حالة...</option>
@@ -1326,7 +1364,7 @@ function App() {
                           )}
 
                           {/* Check-in/out buttons */}
-                          {!emp.checkIn && !emp.status ? (
+                          {!isReadOnly && !emp.checkIn && !emp.status ? (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -1342,7 +1380,7 @@ function App() {
                             >
                               <Plus className="w-5 h-5" />
                             </button>
-                          ) : emp.checkIn && !emp.checkOut ? (
+                          ) : !isReadOnly && emp.checkIn && !emp.checkOut ? (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -1356,7 +1394,7 @@ function App() {
                             >
                               <UserMinus className="w-5 h-5" />
                             </button>
-                          ) : emp.checkOut ? (
+                          ) : !isReadOnly && emp.checkOut ? (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();

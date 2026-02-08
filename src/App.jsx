@@ -161,9 +161,21 @@ function App() {
       }
     });
 
-    return updatedData.filter(
+    const finalData = updatedData.filter(
       (e) => e && employees.some((emp) => emp && emp.name === e.name),
     );
+
+    // Sort by check-in time (earliest first)
+    // Employees with check-in come first, sorted by time
+    // Employees without check-in come last
+    return finalData.sort((a, b) => {
+      if (a.checkIn && b.checkIn) {
+        return new Date(a.checkIn) - new Date(b.checkIn);
+      }
+      if (a.checkIn) return -1;
+      if (b.checkIn) return 1;
+      return 0;
+    });
   }, [history, selectedDate, employees]);
 
   useEffect(() => {

@@ -487,9 +487,6 @@ function App() {
                 <h1 className="text-xs sm:text-base font-black text-slate-900 dark:text-white leading-tight">
                   Time Keeper
                 </h1>
-                <p className="text-[7px] sm:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter hidden xs:block">
-                  Attendance Pro
-                </p>
               </div>
             </div>
 
@@ -549,34 +546,34 @@ function App() {
 
       {/* --- SUB-HEADER: DATE & CLOCK --- */}
       <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 px-4 py-2 sm:py-3 z-20 flex-shrink-0 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full sm:w-auto justify-between sm:justify-start transition-colors duration-300">
+        <div className="max-w-4xl mx-auto flex flex-col xs:flex-row items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm w-full xs:w-auto justify-between sm:justify-start transition-colors duration-300">
             <button
               onClick={() => changeDate(-1)}
-              className="p-2 sm:p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg sm:rounded-xl active:scale-90 text-slate-600 dark:text-slate-300"
+              className="p-1.5 sm:p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg sm:rounded-xl active:scale-90 text-slate-600 dark:text-slate-300"
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2 px-1">
+            <div className="flex items-center gap-1.5 px-1">
               <Calendar className="w-3.5 h-3.5 sm:w-4 h-4 text-primary-500" />
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="bg-transparent font-black text-slate-900 dark:text-white outline-none text-xs sm:text-sm border-none p-0 focus:ring-0"
+                className="bg-transparent font-black text-slate-900 dark:text-white outline-none text-xs sm:text-sm border-none p-0 focus:ring-0 w-24 xs:w-auto"
               />
             </div>
             <button
               onClick={() => changeDate(1)}
-              className="p-2 sm:p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg sm:rounded-xl active:scale-90 text-slate-600 dark:text-slate-300"
+              className="p-1.5 sm:p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg sm:rounded-xl active:scale-90 text-slate-600 dark:text-slate-300"
             >
               <ChevronRight className="w-4 h-4 sm:w-5 h-5" />
             </button>
           </div>
 
-          <div className="bg-slate-900 dark:bg-slate-800 text-white px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-slate-900/10 dark:shadow-black/20 w-full sm:w-auto transition-colors duration-300">
+          <div className="bg-slate-900 dark:bg-slate-800 text-white px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 sm:gap-3 shadow-xl shadow-slate-900/10 dark:shadow-black/20 w-fit xs:w-auto transition-colors duration-300">
             <Clock className="w-3.5 h-3.5 sm:w-4 h-4 text-primary-400" />
-            <span className="font-black text-xs sm:text-sm tabular-nums tracking-tight">
+            <span className="font-black text-[10px] sm:text-sm tabular-nums tracking-tight">
               {format(currentTime, "hh:mm:ss a")}
             </span>
           </div>
@@ -831,20 +828,20 @@ function App() {
             ].map((s, i) => (
               <div
                 key={i}
-                className={`${s.bg} p-4 sm:p-5 rounded-3xl sm:rounded-[2.5rem] shadow-lg shadow-${s.theme}-500/20 flex flex-col justify-between h-28 sm:h-36 relative overflow-hidden group border-none`}
+                className={`${s.bg} p-3 sm:p-5 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-lg shadow-${s.theme}-500/20 flex flex-col justify-between h-24 sm:h-36 relative overflow-hidden group border-none`}
               >
-                <div className="bg-white/20 w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0">
-                  <s.icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                <div className="bg-white/20 w-7 h-7 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                  <s.icon className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div className="relative z-10">
-                  <p className="text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest leading-none mb-1">
+                  <p className="text-white/70 text-[7px] sm:text-[10px] font-black uppercase tracking-widest leading-none mb-1">
                     {s.label}
                   </p>
-                  <p className="text-xl sm:text-3xl font-black text-white tabular-nums leading-none">
+                  <p className="text-lg sm:text-3xl font-black text-white tabular-nums leading-none">
                     {s.val}
                   </p>
                 </div>
-                <s.icon className="absolute -right-4 -bottom-4 w-20 h-20 sm:w-24 sm:h-24 text-white/10 group-hover:rotate-12 transition-transform duration-500" />
+                <s.icon className="absolute -right-3 -bottom-3 w-16 h-16 sm:w-24 sm:h-24 text-white/10 group-hover:rotate-12 transition-transform duration-500" />
               </div>
             ))}
           </div>
@@ -923,47 +920,49 @@ function App() {
 
           {/* --- BATCH ACTION BAR --- */}
           {selectedEmployees.length > 0 && (
-            <div className="sticky top-20 z-40 bg-primary-600 text-white p-4 rounded-3xl shadow-xl shadow-primary-500/30 flex flex-wrap items-center justify-between gap-4 animate-in slide-in-from-top-4 duration-300">
-              <div className="flex items-center gap-3">
-                <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-black">
-                  {selectedEmployees.length} موظفاً
+            <div className="sticky top-20 z-40 bg-primary-600 text-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-xl shadow-primary-500/30 flex flex-col xs:flex-row items-center justify-between gap-3 animate-in slide-in-from-top-4 duration-300">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <span className="bg-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-black">
+                  {selectedEmployees.length}
                 </span>
-                <span className="text-sm font-bold">عملية جماعية:</span>
+                <span className="text-xs sm:text-sm font-bold">
+                  عملية جماعية
+                </span>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                 <button
                   onClick={() =>
                     handleBatchUpdate("checkIn", new Date().toISOString())
                   }
-                  className="bg-white text-primary-600 px-4 py-2 rounded-xl text-xs font-black hover:bg-primary-50"
+                  className="bg-white text-primary-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black hover:bg-primary-50 active:scale-95"
                 >
-                  حضور للكل
+                  حضور
                 </button>
                 <button
                   onClick={() =>
                     handleBatchUpdate("checkOut", new Date().toISOString())
                   }
-                  className="bg-white/10 text-white px-4 py-2 rounded-xl text-xs font-black hover:bg-white/20 border border-white/20"
+                  className="bg-white/10 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black hover:bg-white/20 border border-white/20 active:scale-95"
                 >
-                  انصراف للكل
+                  انصراف
                 </button>
                 <button
                   onClick={() => handleBatchUpdate("status", "إجازة")}
-                  className="bg-amber-500 text-white px-4 py-2 rounded-xl text-xs font-black hover:bg-amber-600 shadow-sm"
+                  className="bg-amber-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black hover:bg-amber-600 active:scale-95"
                 >
-                  إجازة للكل
+                  إجازة
                 </button>
                 <button
                   onClick={() => handleBatchUpdate("status", "غياب")}
-                  className="bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-black hover:bg-rose-600 shadow-sm"
+                  className="bg-rose-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black hover:bg-rose-600 active:scale-95"
                 >
-                  غياب للكل
+                  غياب
                 </button>
                 <button
                   onClick={() => setSelectedEmployees([])}
-                  className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-black hover:bg-black shadow-sm"
+                  className="bg-slate-900 text-white p-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl active:scale-95"
                 >
-                  إلغاء التحديد
+                  <X className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
@@ -971,12 +970,12 @@ function App() {
 
           {/* --- EMPLOYEE LIST --- */}
           <div className="space-y-4">
-            <div className="sticky top-0 z-10 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md py-4 transition-all">
+            <div className="sticky top-0 z-10 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md py-2 sm:py-4 transition-all">
               <div
-                className="flex items-center justify-between px-6 py-5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-[2.5rem] shadow-sm"
+                className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl sm:rounded-[2.5rem] shadow-sm"
                 dir="rtl"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                   <button
                     onClick={() => {
                       if (
@@ -991,7 +990,7 @@ function App() {
                         );
                       }
                     }}
-                    className={`w-8 h-8 rounded-xl border-2 flex items-center justify-center transition-all ${
+                    className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border-2 flex items-center justify-center transition-all ${
                       selectedEmployees.length === filteredAttendance.length &&
                       filteredAttendance.length > 0
                         ? "bg-primary-600 border-primary-600 text-white"
@@ -1000,15 +999,15 @@ function App() {
                   >
                     {selectedEmployees.length === filteredAttendance.length &&
                       filteredAttendance.length > 0 && (
-                        <CheckCircle2 className="w-5 h-5" />
+                        <CheckCircle2 className="w-4 h-4 sm:w-5 h-5" />
                       )}
                   </button>
-                  <span className="font-black text-slate-900 dark:text-white text-sm">
+                  <span className="font-black text-slate-900 dark:text-white text-xs sm:text-sm">
                     تحديد الكل ({filteredAttendance.length})
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                  <span className="text-[8px] sm:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase bg-slate-100 dark:bg-slate-800 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full">
                     {filteredAttendance.length} موظف
                   </span>
                 </div>
@@ -1039,7 +1038,7 @@ function App() {
                     <div className="flex items-center gap-3 sm:gap-4">
                       {/* Status Dot */}
                       <div
-                        className={`w-1.5 h-12 rounded-full shrink-0 ${
+                        className={`w-1 sm:w-1.5 h-10 sm:h-12 rounded-full shrink-0 ${
                           emp.status
                             ? "bg-amber-500"
                             : emp.checkOut
@@ -1072,9 +1071,9 @@ function App() {
                       </div>
 
                       {/* Times (Compact) */}
-                      <div className="hidden sm:flex items-center gap-4 px-4 border-r border-slate-100 dark:border-slate-800">
+                      <div className="flex items-center gap-2 sm:gap-4 px-2 sm:px-4 border-r border-slate-100 dark:border-slate-800">
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-1 rounded-lg transition-colors"
+                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (emp.checkIn) {
@@ -1086,7 +1085,7 @@ function App() {
                             }
                           }}
                         >
-                          <p className="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase leading-none mb-1">
+                          <p className="text-[6px] sm:text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase leading-none mb-0.5 sm:mb-1">
                             دخول
                           </p>
                           {editingTime?.name === emp.name &&
@@ -1104,16 +1103,16 @@ function App() {
                               onKeyDown={handleEditTimeSave}
                               autoFocus
                               onClick={(e) => e.stopPropagation()}
-                              className="text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none"
+                              className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
                             />
                           ) : (
-                            <p className="text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
+                            <p className="text-[10px] sm:text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
                               {formatTime(emp.checkIn) || "--:--"}
                             </p>
                           )}
                         </div>
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-1 rounded-lg transition-colors"
+                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (emp.checkOut) {
@@ -1125,7 +1124,7 @@ function App() {
                             }
                           }}
                         >
-                          <p className="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase leading-none mb-1">
+                          <p className="text-[6px] sm:text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase leading-none mb-0.5 sm:mb-1">
                             خروج
                           </p>
                           {editingTime?.name === emp.name &&
@@ -1143,10 +1142,10 @@ function App() {
                               onKeyDown={handleEditTimeSave}
                               autoFocus
                               onClick={(e) => e.stopPropagation()}
-                              className="text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none"
+                              className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
                             />
                           ) : (
-                            <p className="text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
+                            <p className="text-[10px] sm:text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
                               {formatTime(emp.checkOut) || "--:--"}
                             </p>
                           )}

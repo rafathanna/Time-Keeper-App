@@ -19,6 +19,9 @@ export default {
           950: "#082f49",
         },
       },
+      screens: {
+        xs: "400px",
+      },
       animation: {
         "spin-slow": "spin 3s linear infinite",
       },

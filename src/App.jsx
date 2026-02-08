@@ -1098,20 +1098,22 @@ function App() {
 
                       {/* Name & Basic Info */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white truncate tracking-tight">
+                        <div className="flex items-start gap-2 mb-0.5">
+                          <h3 className="text-sm sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                             {emp.name}
                           </h3>
                           {emp.checkIn && !emp.checkOut && (
-                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-pulse mt-1.5 sm:mt-2 shrink-0" />
                           )}
                         </div>
-                        <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                          <span className="text-[10px] font-black text-slate-400 uppercase">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                          <span className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase">
                             {emp.job}
                           </span>
-                          <span className="text-[10px] text-slate-200">•</span>
-                          <span className="text-[10px] font-black text-primary-500/70 uppercase">
+                          <span className="text-[9px] sm:text-[10px] text-slate-200">
+                            •
+                          </span>
+                          <span className="text-[9px] sm:text-[10px] font-black text-primary-500/70 uppercase">
                             {emp.department}
                           </span>
                         </div>

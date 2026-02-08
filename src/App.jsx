@@ -1073,7 +1073,7 @@ function App() {
                       {/* Times (Compact) */}
                       <div className="flex items-center gap-2 sm:gap-4 px-2 sm:px-4 border-r border-slate-100 dark:border-slate-800">
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors"
+                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors group/time"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (emp.checkIn) {
@@ -1090,21 +1090,35 @@ function App() {
                           </p>
                           {editingTime?.name === emp.name &&
                           editingTime?.field === "checkIn" ? (
-                            <input
-                              type="time"
-                              value={editingTime.value}
-                              onChange={(e) =>
-                                setEditingTime({
-                                  ...editingTime,
-                                  value: e.target.value,
-                                })
-                              }
-                              onBlur={handleEditTimeSave}
-                              onKeyDown={handleEditTimeSave}
-                              autoFocus
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
-                            />
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="time"
+                                value={editingTime.value}
+                                onChange={(e) =>
+                                  setEditingTime({
+                                    ...editingTime,
+                                    value: e.target.value,
+                                  })
+                                }
+                                onBlur={handleEditTimeSave}
+                                onKeyDown={handleEditTimeSave}
+                                autoFocus
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
+                              />
+                              <button
+                                onMouseDown={(e) => {
+                                  e.preventDefault(); // Prevent blur
+                                  e.stopPropagation();
+                                  updateAttendance(emp.name, "checkIn", null);
+                                  setEditingTime(null);
+                                }}
+                                className="p-1 bg-rose-100 text-rose-600 rounded hover:bg-rose-200"
+                                title="إلغاء الحضور"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
                           ) : (
                             <p className="text-[10px] sm:text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
                               {formatTime(emp.checkIn) || "--:--"}
@@ -1112,7 +1126,7 @@ function App() {
                           )}
                         </div>
                         <div
-                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors"
+                          className="text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-0.5 sm:p-1 rounded-lg transition-colors group/time"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (emp.checkOut) {
@@ -1129,21 +1143,35 @@ function App() {
                           </p>
                           {editingTime?.name === emp.name &&
                           editingTime?.field === "checkOut" ? (
-                            <input
-                              type="time"
-                              value={editingTime.value}
-                              onChange={(e) =>
-                                setEditingTime({
-                                  ...editingTime,
-                                  value: e.target.value,
-                                })
-                              }
-                              onBlur={handleEditTimeSave}
-                              onKeyDown={handleEditTimeSave}
-                              autoFocus
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
-                            />
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="time"
+                                value={editingTime.value}
+                                onChange={(e) =>
+                                  setEditingTime({
+                                    ...editingTime,
+                                    value: e.target.value,
+                                  })
+                                }
+                                onBlur={handleEditTimeSave}
+                                onKeyDown={handleEditTimeSave}
+                                autoFocus
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-[10px] sm:text-xs font-black bg-white dark:bg-slate-800 border-2 border-primary-500 rounded p-0.5 outline-none w-16 sm:w-auto"
+                              />
+                              <button
+                                onMouseDown={(e) => {
+                                  e.preventDefault(); // Prevent blur
+                                  e.stopPropagation();
+                                  updateAttendance(emp.name, "checkOut", null);
+                                  setEditingTime(null);
+                                }}
+                                className="p-1 bg-rose-100 text-rose-600 rounded hover:bg-rose-200"
+                                title="إلغاء الانصراف"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
                           ) : (
                             <p className="text-[10px] sm:text-xs font-black text-slate-600 dark:text-slate-300 tabular-nums">
                               {formatTime(emp.checkOut) || "--:--"}

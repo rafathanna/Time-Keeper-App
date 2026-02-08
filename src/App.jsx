@@ -479,15 +479,15 @@ function App() {
       <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-30 flex-shrink-0 transition-colors duration-300">
         <div className="max-w-4xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               <div className="p-1.5 sm:p-2 bg-primary-600 rounded-xl shadow-lg shadow-primary-500/30">
-                <Briefcase className="w-4 h-4 sm:w-5 h-5 text-white" />
+                <Briefcase className="w-3.5 h-3.5 sm:w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-tight">
+                <h1 className="text-xs sm:text-base font-black text-slate-900 dark:text-white leading-tight">
                   Time Keeper
                 </h1>
-                <p className="text-[8px] sm:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter">
+                <p className="text-[7px] sm:text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter hidden xs:block">
                   Attendance Pro
                 </p>
               </div>
@@ -495,25 +495,24 @@ function App() {
 
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
               {/* CLOUD SYNC INDICATOR */}
-              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner">
+              <div className="flex items-center gap-1 sm:gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner">
                 <button
                   onClick={() => {
-                    // Force a reload by resetting the ref
                     lastCloudData.current = null;
                     setIsCloudLoaded(false);
                     window.location.reload();
                   }}
                   title="تحديث إجباري"
-                  className="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all"
+                  className="p-1 sm:p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition-all"
                 >
                   <RefreshCcw
-                    className={`w-3.5 h-3.5 text-slate-400 ${isSyncing ? "animate-spin" : ""}`}
+                    className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 ${isSyncing ? "animate-spin" : ""}`}
                   />
                 </button>
                 <div
-                  className={`w-2 h-2 rounded-full ${isOnline ? (isSyncing ? "bg-blue-500 animate-pulse" : "bg-green-500") : "bg-rose-500 animate-ping"}`}
+                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isOnline ? (isSyncing ? "bg-blue-500 animate-pulse" : "bg-green-500") : "bg-rose-500 animate-ping"}`}
                 />
-                <span className="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-tighter ml-1">
+                <span className="text-[8px] sm:text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-tighter ml-0.5 hidden sm:inline">
                   {isSyncing ? "مزامنة" : isOnline ? "متصل" : "أوفلاين"}
                 </span>
               </div>

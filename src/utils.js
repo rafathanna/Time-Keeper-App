@@ -254,6 +254,11 @@ export const exportToExcel = async (data, dateStr) => {
         // If employee has status (leave/absence), show it instead of time
         if (emp.status) {
           setCell(4, emp.status, true);
+          setCell(5, "", true);
+          setCell(6, "", true);
+          try {
+            worksheet.mergeCells(currentRow, 4, currentRow, 5);
+          } catch(e) {}
           row.getCell(4).fill = {
             type: "pattern",
             pattern: "solid",
@@ -263,8 +268,6 @@ export const exportToExcel = async (data, dateStr) => {
             ...FONT_DATA_BOLD,
             color: { argb: "FFD97706" }, // Amber text
           };
-          setCell(5, "", true);
-          setCell(6, "", true);
         } else {
           if (emp.checkInStatus) {
             setCell(4, emp.checkInStatus, true);
@@ -489,6 +492,11 @@ export const exportAllHistory = async (history) => {
           // If employee has status (leave/absence), show it instead of time
           if (emp.status) {
             setCell(4, emp.status, true);
+            setCell(5, "", true);
+            setCell(6, "", true);
+            try {
+              worksheet.mergeCells(currentRow, 4, currentRow, 5);
+            } catch(e) {}
             row.getCell(4).fill = {
               type: "pattern",
               pattern: "solid",
@@ -498,8 +506,6 @@ export const exportAllHistory = async (history) => {
               ...FONT_DATA_BOLD,
               color: { argb: "FFD97706" }, // Amber text
             };
-            setCell(5, "", true);
-            setCell(6, "", true);
           } else {
             if (emp.checkInStatus) {
               setCell(4, emp.checkInStatus, true);
@@ -955,6 +961,9 @@ export const exportDailyTimeSheet = async (data, dateStr) => {
         sc(7, "");
         sc(8, "");
         sc(9, "");
+        try {
+          worksheet.mergeCells(rowNum, 5, rowNum, 6);
+        } catch(e) {}
       } else {
         if (emp.checkInStatus) {
           sc(5, emp.checkInStatus, null, { name: "Arial", size: 14, bold: true, color: { argb: "FFD97706" } });

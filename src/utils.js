@@ -780,10 +780,13 @@ export const exportIndividualTimeSheets = async (
         sc(2, ds);
         sc(3, dnAr);
         if (att && att.status) {
-          sc(4, "");
+          sc(4, att.status);
           sc(5, "");
-          sc(6, att.status);
-          row.getCell(6).font = { name: "Arial", size: 18, bold: true, color: { argb: "FFD97706" } };
+          sc(6, "");
+          try {
+            ws.mergeCells(curr, 4, curr, 5);
+          } catch(e) {}
+          row.getCell(4).font = { name: "Arial", size: 18, bold: true, color: { argb: "FFD97706" } };
         } else {
           if (att && att.checkInStatus) {
             sc(4, att.checkInStatus);
